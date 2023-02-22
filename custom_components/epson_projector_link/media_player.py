@@ -11,7 +11,10 @@ from homeassistant.components.media_player import MediaPlayerEntity
 from homeassistant.components.media_player.const import SUPPORT_SELECT_SOURCE
 from homeassistant.components.media_player.const import SUPPORT_TURN_OFF
 from homeassistant.components.media_player.const import SUPPORT_TURN_ON
-from homeassistant.components.media_player.const import SUPPORT_VOLUME_SET
+from homeassistant.components.media_player.const import (
+    SUPPORT_VOLUME_SET,
+    SUPPORT_VOLUME_STEP,
+)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.const import STATE_ON
@@ -183,6 +186,7 @@ def _get_supported_features(properties):
         SUPPORT_TURN_OFF
         | SUPPORT_TURN_ON
         | SUPPORT_SELECT_SOURCE
+        | SUPPORT_VOLUME_STEP
         # Technically supported, but disabled since it just proxies to the playing device
         # | SUPPORT_PAUSE
         # | SUPPORT_PLAY
@@ -228,6 +232,7 @@ class EpsonProjectorMediaPlayer(MediaPlayerEntity):
         self._attr_extra_state_attributes = {}
         self._attr_should_poll = False  # We do our own polling based on config setting
         self._attr_source_list = ["HDMI1", "HDMI2"]
+        self._attr_source = "HDMI1"
         self._attr_state = None
         self._attr_supported_features = _get_supported_features(poll_properties)
 
@@ -343,6 +348,7 @@ class EpsonProjectorMediaPlayer(MediaPlayerEntity):
     async def async_select_source(self, source):
         selected_source = SOURCE_CODE_INVERTED_MAP[source]
         await self._projector.set_property(PROPERTY_SOURCE, selected_source)
+        self._attr_source = source
 
     async def async_set_volume_level(self, volume):
         await self._projector.set_property(PROPERTY_VOLUME, int(volume * 100))
