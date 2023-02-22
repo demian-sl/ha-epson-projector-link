@@ -226,7 +226,7 @@ class EpsonProjectorMediaPlayer(MediaPlayerEntity):
         self._attr_device_class = DEVICE_CLASS_TV
         self._attr_extra_state_attributes = {}
         self._attr_should_poll = False  # We do our own polling based on config setting
-        self._attr_source_list = None
+        self._attr_source_list = ["HDMI1", "HDMI2"]
         self._attr_state = None
         self._attr_supported_features = _get_supported_features(poll_properties)
 
