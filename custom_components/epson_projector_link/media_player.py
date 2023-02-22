@@ -182,6 +182,7 @@ def _get_supported_features(properties):
     features = (
         SUPPORT_TURN_OFF
         | SUPPORT_TURN_ON
+        | SUPPORT_SELECT_SOURCE
         # Technically supported, but disabled since it just proxies to the playing device
         # | SUPPORT_PAUSE
         # | SUPPORT_PLAY
